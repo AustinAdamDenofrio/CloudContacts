@@ -11,5 +11,6 @@ namespace CloudContacts.Data
         public DbSet<Contact> Contacts { get;set; }
 
         public DbSet<Category> Categories { get; set; }
+        public IEnumerable<object> Category { get; internal set; }
     }
 }

@@ -1,6 +1,9 @@
+using CloudContacts.Client.Services.Interfaces;
 using CloudContacts.Components;
 using CloudContacts.Components.Account;
 using CloudContacts.Data;
+using CloudContacts.Services;
+using CloudContacts.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +43,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryDTOService, CategoryDTOService>();
 
 var app = builder.Build();
 
