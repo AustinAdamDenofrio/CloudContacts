@@ -1,5 +1,8 @@
-﻿using CloudContacts.Client.Models.Enums;
+﻿using CloudContacts.Client.Components.Helper;
+using CloudContacts.Client.Models;
+using CloudContacts.Client.Models.Enums;
 using CloudContacts.Data;
+using CloudContacts.Helper;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -74,5 +77,39 @@ namespace CloudContacts.Models
         public Guid? ImageId { get; set; }
         public virtual ImageUpload? Image {  get; set; }
     }
-    //TODO: What about the DTOs???
+    
+    public static class ContactExtensions
+    {
+        private static CategoryDTO categoryDTO;
+
+        public static ContactDTO ToDTO(this Contact contact)
+        {
+            ContactDTO dto = new ContactDTO()
+            {
+                Id = contact.Id,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                BirthDate = contact.BirthDate,
+                Address = contact.Address,
+                Address2 = contact.Address2,
+                City = contact.City,
+                State = contact.State,
+                ZipCode = contact.ZipCode,
+                Email = contact.Email,
+                PhoneNumber = contact.PhoneNumber,
+                Created = contact.Created,
+                ImageUrl = contact.ImageId.HasValue ? $"/api/uploads/{contact.ImageId}" : UploadHelper.DefaultContactImage,
+            };
+
+            //ToDo: Categories
+
+            foreach (Category category in contact.Categories)
+            {
+                category.Contacts.Clear();
+                dto.Categories.Add(categoryDTO);
+            }
+
+            return dto;
+        }
+    }
 }

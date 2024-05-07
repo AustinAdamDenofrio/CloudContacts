@@ -24,6 +24,11 @@ namespace CloudContacts.Data
         public Guid? ImageId { get; set; }
 
         public virtual ImageUpload? Image { get; set; }
+
+        public ICollection<Contact> Contacts { get; set;} = new HashSet<Contact>();
+
+        public ICollection<Category> Categories { get; set;} = new HashSet<Category>();
+
     }
 
 }
