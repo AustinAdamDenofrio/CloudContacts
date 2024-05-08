@@ -1,0 +1,171 @@
+﻿@using CloudContacts.Client.Models.Enums
+
+@if (Contact is not null)
+{
+    <EditForm Model="Contact">
+        <DataAnnotationsValidator />
+
+        <div class="border  bg-light shadow-lg border-2 py-2">
+            <div class="row p-2 g-3">
+                <div class="col-12 col-md-4">
+
+                    <div class="square-img-container">
+                        <img src="@(string.IsNullOrEmpty(Contact.ImageUrl) ? ImageHelper.DefaultContactImage : Contact.ImageUrl)" class="square-img" />
+                    </div>
+
+                    <div>
+                        <InputFile class="form-control mt-2" accept=".png, .jpg, .jpeg, .svg"></InputFile>
+                        <span class="text-danger">
+                            @*TODO: errors wuth imaged here*@
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-12 col-md-8">
+                    <!-- row/form with collumn of content -->
+                    <div class="row g-2" action="#">
+                        <div class="col-12 col-md-6">
+                            <label for="firstName" class="form-label">
+                                First Name
+                            </label>
+                            <InputText @bind-Value="Contact.FirstName"
+                                       id="firstName"
+                                       class="form-control"
+                                       placeholder="First Name"
+                                       aria-label="First Name" />
+                            <ValidationMessage For="() => Contact.FirstName" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="lastName" class="form-label">
+                                Last Name
+                            </label>
+                            <InputText @bind-Value="Contact.LastName"
+                                       id="lastName"
+                                       class="form-control"
+                                       placeholder="Last Name"
+                                       aria-label="Last Name" />
+                            <ValidationMessage For="() => Contact.LastName" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="email" class="form-label">
+                                Email
+                            </label>
+                            <InputText @bind-Value="Contact.Email"
+                                       id="email"
+                                       class="form-control"
+                                       placeholder="Email"
+                                       aria-label="Email" />
+                            <ValidationMessage For="() => Contact.Email" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="phoneNumInput" class="form-label">
+                                Phone Number
+                            </label>
+                            <InputText @bind-Value="Contact.PhoneNumber"
+                                       id="phoneNumInput"
+                                       class="form-control"
+                                       placeholder="(000) 000-0000"
+                                       aria-label="Phone Number" />
+                            <ValidationMessage For="() => Contact.PhoneNumber" />
+                        </div>
+                        <div class="col-12">
+                            <label for="addressMain" class="form-label">
+                                Address
+                            </label>
+                            <InputText @bind-Value="Contact.Address"
+                                       id="addressMain"
+                                       class="form-control"
+                                       required
+                                       name="addressMain"
+                                       type="text"
+                                       placeholder="1234 Main St"
+                                       aria-label="Address" />
+                            <ValidationMessage For="() => Contact.Address" />
+                        </div>
+                        <div class="col-12">
+                            <label for="aptNum" class="form-label">
+                                Address 2
+                            </label>
+                            <InputText @bind-Value="Contact.Address2"
+                                       id="aptNum"
+                                       class="form-control"
+                                       placeholder="Apt, Studio, or Floor"
+                                       aria-label="Apartment, studio, or floor" />
+                            <ValidationMessage For="() => Contact.Address2" />
+
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="addressCity" class="form-label">
+                                City
+                            </label>
+                            <InputText @bind-Value="Contact.City"
+                                       id="addressCity"
+                                       class="form-control"
+                                       placeholder="City"
+                                       aria-label="City" />
+                            <ValidationMessage For="() => Contact.City" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="state" class="form-label">
+                                State
+                            </label>
+                            <InputSelect @bind-Value="Contact.State" class="form-select">
+                                <option value="">
+                                    Select a State...
+                                </option>
+                                @foreach (State state in Enum.GetValues<State>())
+                                {
+                                    <option value="@state">
+                                        @state.ToString()
+                                    </option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="() => Contact.State"/>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <label for="zipCode" class="form-label">Zip</label>
+                            <InputNumber @bind-Value="Contact.ZipCode" class="form-control"
+                                         id="zipCode"
+                                         aria-label="Zip Code"
+                                         placeholder="Zip" />
+                            <ValidationMessage For="() => Contact.ZipCode" />
+                        </div>
+                        <div class="col-12">
+                            @* categories *@
+                        </div>
+                        <div class="col-12 text-end">
+                            <button class="btn btn-lg btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </EditForm>
+}
+
+
+@code {
+    #region Component parameter
+    [Parameter, EditorRequired]
+    public ContactDTO? Contact { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<ContactDTO> OnSubmit { get; set; }
+
+    #endregion
+
+
+
+
+    #region Component state
+
+    #endregion
+
+
+
+
+
+    #region Component methods
+    #endregion
+}

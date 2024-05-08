@@ -1,0 +1,13 @@
+﻿@page "/contacts/create"
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+<PageTitle>Cloud Contaacts | New Contact</PageTitle>
+
+<div class="p-3 my-5 border border-2 shadow-lg bg-light">
+    <ContactForm Contact="new ContactDTO()"/>
+</div>
+
+@code {
+
+}

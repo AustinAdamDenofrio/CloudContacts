@@ -1,5 +1,15 @@
 ﻿@page "/contacts"
-<h3>Contacts Index</h3>
+@attribute [Authorize]
+@rendermode InteractiveServer
+
+<PageTitle>Cloud Contacts | Contacts</PageTitle>
+
+<div class="d-flex aligm-items-center mt-3">
+    <h1 class="">All Contacts</h1>
+    <a href="contacts/create" class="ms-auto btn btn-primary rounded-pill">New Contact</a>
+</div>
+
+<CloudContacts.Client.Components.UIs.Contacts.ContactForm></CloudContacts.Client.Components.UIs.Contacts.ContactForm>
 
 @code {
 
