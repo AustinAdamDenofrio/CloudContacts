@@ -27,27 +27,11 @@
             </li>
         </ul>
     </EditForm>
-    <ul>
-        @foreach(CategoryDTO category in categories)
-        {
 
-            <li>
-                <span>@category.Name</span>
-                <button class="btn btn-danger btn-sm" @onclick="() => DeleteCategory(category.Id)">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </li>
-            <li>
-                <EditForm Model="category" OnValidSubmit="() => UpdateCategory(category)">
-                    <InputText @bind-Value="category.Name" class="form-control" />
-                    <button class="btn btn-primary btn-sm" type="submit">Save</button>
-                    <ValidationMessage For="() => category.Name" />
-                </EditForm>
-            </li>
-        }
-    </ul>
 
-    <CategoryAccordion Categories="categories"/>
+    <CategoryAccordion Categories="categories"
+                       OnCategoryUpdate="UpdateCategory"
+                       OnCategoryDelete="DeleteCategory" />
 
 
 </div>

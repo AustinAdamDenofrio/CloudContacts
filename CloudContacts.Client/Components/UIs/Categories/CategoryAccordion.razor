@@ -3,7 +3,9 @@
     {
         <CategoryAccordionItem @key="category.Id" 
                                AccordionId="@accordionId"  
-                               Category="category" />
+                               Category="category" 
+                               OnUpdate="OnCategoryUpdate" 
+                               OnDelete="OnCategoryDelete"/>
     }
 </div>
 
@@ -11,6 +13,17 @@
     #region parameter
     [Parameter, EditorRequired]
     public IEnumerable<CategoryDTO> Categories { get; set; } = [];
+
+
+    //Event Callbacks
+    [Parameter, EditorRequired]
+    public EventCallback<CategoryDTO> OnCategoryUpdate { get; set; }
+
+
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnCategoryDelete { get; set; }
+
+
     #endregion
 
     #region state
@@ -18,5 +31,7 @@
     #endregion
 
     #region method
+
+
     #endregion
 }
