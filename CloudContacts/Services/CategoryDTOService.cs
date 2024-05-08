@@ -20,20 +20,53 @@ namespace CloudContacts.Services
             return createdCategory.ToDTO();
         }
 
+
         public async Task<IEnumerable<CategoryDTO>> GetCategoryAsync(string userId)
         {
             // get from the database
             IEnumerable<Category> createCategories = await repository.GetCategoryAsync(userId);
-            //create a list to hold DTOS
-            List<CategoryDTO> results = new List<CategoryDTO>();
 
-            //convert to DTO
-            foreach (Category category in createCategories)
+
+
+
+
+           IEnumerable<CategoryDTO> categoryDTO = createCategories.Select(c=>c.ToDTO());
+
+
+            ////create a list to hold DTOS
+            //List<CategoryDTO> results = new List<CategoryDTO>();
+
+            ////convert to DTO
+            //foreach (Category category in createCategories)
+            //{
+            //    results.Add(category.ToDTO());
+            //}
+
+            return categoryDTO;
+        }
+
+
+        public async Task DeleteCategoriesAsync(int categoryId, string userId)
+        {
+            await repository.DeleteCategoriesAsync(categoryId, userId);
+        }
+
+        public async Task<CategoryDTO?> GetCategoryByIdAsyc(int categoryId, string userId)
+        {
+            Category? category = await repository.GetCategoryByIdAsync(categoryId, userId);
+            return category?.ToDTO();
+        }
+
+        public async Task UpdateCategoryAsync(CategoryDTO category, string userId)
+        {
+            Category? categoryToUpdate = await repository.GetCategoryByIdAsync(category.Id, userId);
+
+            if (categoryToUpdate is not null)
             {
-                results.Add(category.ToDTO());
-            }
+                categoryToUpdate.Name = category.Name;
 
-            return results;
+                await repository.UpdateCategoryAsync(categoryToUpdate, userId);
+            }
         }
     }
 }
