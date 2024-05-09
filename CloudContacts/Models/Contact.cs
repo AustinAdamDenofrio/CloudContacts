@@ -24,6 +24,8 @@ namespace CloudContacts.Models
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long", MinimumLength = 2)]
         public string? LastName { get; set;}
 
+
+        //Computed Property
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
 
