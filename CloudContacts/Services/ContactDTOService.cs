@@ -4,6 +4,7 @@ using CloudContacts.Helper;
 using CloudContacts.Models;
 using CloudContacts.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Collections.Generic;
 
 namespace CloudContacts.Services
 {
@@ -48,5 +49,12 @@ namespace CloudContacts.Services
 
         }
 
+        public async Task<IEnumerable<ContactDTO>> GetContactsAsync(string userId)
+        {
+            IEnumerable<Contact> contacts = await repository.GetContactsAsync(userId);
+            IEnumerable<ContactDTO> contactsDTO = contacts.Select(c => c.ToDTO());
+
+            return contactsDTO;
+        }
     }
 }

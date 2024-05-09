@@ -6,7 +6,7 @@
 
 <PageTitle>Cloud Contacts | Contacts</PageTitle>
 
-<div class="d-flex aligm-items-center mt-3">
+<div class="d-flex align-items-center mt-3">
     <h1 class="">All Contacts</h1>
     <a href="contacts/create" class="ms-auto btn btn-primary rounded-pill">New Contact</a>
 
@@ -25,6 +25,10 @@
 
 @code {
     #region parameter
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthStateTask { get; set; }
+
     #endregion
 
 
@@ -39,12 +43,19 @@
     #region methods
     protected override async Task OnInitializedAsync()
     {
-        //get userid from the authstate
-        //make the getcontactasync
-        //make repo method
-        //add those to the interface
 
-     //   contacts = await ContactService.GetContactsAsync(userId);
+
+        try
+        {
+            UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
+
+            contacts = await ContactService.GetContactsAsync(userInfo!.UserId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
     }
 
     #endregion

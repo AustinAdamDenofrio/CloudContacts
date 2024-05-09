@@ -40,5 +40,13 @@ namespace CloudContacts.Services
 
             return contact;
         }
+
+        public async Task<IEnumerable<Contact>> GetContactsAsync(string userId)
+        {
+            using ApplicationDbContext context = contextFactory.CreateDbContext();
+            IEnumerable<Contact> contacts = await context.Contacts.Where(c => c.AppUserId == userId).ToListAsync();
+
+            return contacts;
+        }
     }
 }

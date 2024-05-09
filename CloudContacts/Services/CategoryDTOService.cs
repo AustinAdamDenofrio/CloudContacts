@@ -28,8 +28,6 @@ namespace CloudContacts.Services
 
 
 
-
-
            IEnumerable<CategoryDTO> categoryDTO = createCategories.Select(c=>c.ToDTO());
 
 

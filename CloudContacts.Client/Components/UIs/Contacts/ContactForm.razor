@@ -12,8 +12,8 @@
                 <div class="col-12 col-md-4">
 
                     <div class="square-img-container">
-                        <img src="@(string.IsNullOrEmpty(Contact.ImageUrl) ? ImageHelper.DefaultContactImage : Contact.ImageUrl)" 
-                                    class="square-img" />
+                        <img src="@(string.IsNullOrEmpty(Contact.ImageUrl) ? ImageHelper.DefaultContactImage : Contact.ImageUrl)"
+                             class="square-img" />
                     </div>
 
                     <div>
@@ -155,10 +155,17 @@
                             <ValidationMessage For="() => Contact.BirthDate" />
 
                         </div>
-                        <div class="col-12 text-end">
-                            <button class="btn btn-lg btn-primary">
-                                Save
-                            </button>
+                        <div class="col-12 hstack justify-content-end gap-3">
+                            <div class="text-end">
+                                <a class="btn btn-lg btn-outline-secondary" href="contacts">
+                                    Cancel
+                                </a>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-lg btn-primary" type="submit">
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
