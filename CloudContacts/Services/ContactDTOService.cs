@@ -52,7 +52,8 @@ namespace CloudContacts.Services
         public async Task<ContactDTO?> GetContactByIdAsync(int contactId, string userId)
         {
             Contact? contact = await repository.GetContactByIdAsync(contactId, userId);
-            return contact == null ? null : contact.ToDTO(); 
+            // turnary in place of if statement
+            return contact?.ToDTO(); 
         }
 
         public async Task<IEnumerable<ContactDTO>> GetContactsAsync(string userId)

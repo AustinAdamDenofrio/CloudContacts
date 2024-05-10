@@ -44,6 +44,7 @@ namespace CloudContacts.Services
         public async Task<Contact?> GetContactByIdAsync(int contactId, string userId)
         {
             using ApplicationDbContext context = contextFactory.CreateDbContext();
+
             Contact? contact = await context.Contacts.FirstOrDefaultAsync(c => c.AppUserId == userId && c.Id == contactId);
 
             return contact;
