@@ -1,0 +1,100 @@
+﻿@page "/contacts/edit/{id:int}"
+@using Microsoft.AspNetCore.Authorization
+
+@rendermode InteractiveServer
+@attribute [Authorize]
+
+@inject NavigationManager Nav
+@inject IContactDTOService ContactService
+
+@if (contact is not null)
+{
+
+    <div class="h-100 d-flex flex-column justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="car-title">Edit Contact</h3>
+
+                <ContactForm 
+                    Contact="contact" 
+                    OnSubmit="HandleSubmit"/>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h3>Uh oh!</h3>
+        <p>No Contact exists with that information</p>
+    </div>
+}
+
+@code {
+    #region  parameter
+    //From Page Route
+    [Parameter]
+    public int Id { get; set; }
+
+    private ContactDTO? contact;
+    string errorMessage = string.Empty;
+
+    private UserInfo? userInfo;
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthStateTask { get; set; } 
+    #endregion
+
+
+    #region  state
+    #endregion
+
+
+
+    #region  methods
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            //get user info
+            userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
+
+            //get the contact info by id from database
+            contact = await ContactService.GetContactByIdAsync(Id, userInfo!.UserId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            contact = null;
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        try
+        {
+            errorMessage = string.Empty;
+
+            if (contact is not null)
+            {
+                await ContactService.UpdateContactAsync(contact, userInfo!.UserId);                
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+
+            errorMessage = "An error occurred while trying to update this contact";
+        }
+
+        if (errorMessage == string.Empty)
+        {
+            Nav.NavigateTo("/contacts");
+        }
+    }
+    #endregion
+}

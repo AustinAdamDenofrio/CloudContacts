@@ -10,16 +10,20 @@
     <h1 class="">All Contacts</h1>
     <a href="contacts/create" class="ms-auto btn btn-primary rounded-pill">New Contact</a>
 
-    <ul>
-        @foreach(ContactDTO contact in contacts)
-        {
-            <li>
-                <img height="30" src="@contact.ImageUrl" />
-                @contact.FullName
-            </li>
-        }
-    </ul>
 </div>
+
+<ul>
+    @foreach (ContactDTO contact in contacts)
+    {
+        <li>
+            <img height="30" src="@contact.ImageUrl" />
+            @contact.FullName
+            <a href="contacts/edit/@contact.Id" class="btn btn-sm btn-primary">Edit</a>
+            @*Take me to a URL like contacts/edit/5 to edit the contact with ID 5*@
+            @*Worry about categories later*@
+        </li>
+    }
+</ul>
 
 
 

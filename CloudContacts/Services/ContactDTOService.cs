@@ -49,12 +49,51 @@ namespace CloudContacts.Services
 
         }
 
+        public async Task<ContactDTO?> GetContactByIdAsync(int contactId, string userId)
+        {
+            Contact? contact = await repository.GetContactByIdAsync(contactId, userId);
+            return contact == null ? null : contact.ToDTO(); 
+        }
+
         public async Task<IEnumerable<ContactDTO>> GetContactsAsync(string userId)
         {
             IEnumerable<Contact> contacts = await repository.GetContactsAsync(userId);
             IEnumerable<ContactDTO> contactsDTO = contacts.Select(c => c.ToDTO());
 
             return contactsDTO;
+        }
+
+        public async Task UpdateContactAsync(ContactDTO contactDTO, string userId)
+        {
+            Contact? contact = await repository.GetContactByIdAsync(contactDTO.Id, userId);
+
+            if (contact is not null) 
+            {
+                contact.FirstName = contactDTO.FirstName;
+                contact.LastName = contactDTO.LastName;
+                contact.BirthDate = contactDTO.BirthDate;
+                contact.Address = contactDTO.Address;
+                contact.Address2 = contactDTO.Address2;
+                contact.City = contactDTO.City;
+                contact.State = contactDTO.State;
+                contact.ZipCode = contactDTO.ZipCode;
+                contact.Email = contactDTO.Email;
+                contact.PhoneNumber = contactDTO.PhoneNumber;
+
+                //TODO: Images
+                if (contactDTO.ImageUrl?.StartsWith("data:") == true)
+                {
+                    contact.Image = UploadHelper.GetImageUpload(contactDTO.ImageUrl);
+                }
+                else 
+                { 
+                    contact.Image = null;
+                }
+
+                //ToDo: Categories????
+
+                await repository.UpdateContactAsync(contact);
+            }
         }
     }
 }
