@@ -12,18 +12,51 @@
 
 </div>
 
-<ul>
-    @foreach (ContactDTO contact in contacts)
-    {
-        <li>
-            <img height="30" src="@contact.ImageUrl" />
-            @contact.FullName
-            <a href="contacts/edit/@contact.Id" class="btn btn-sm btn-primary">Edit</a>
-            @*Take me to a URL like contacts/edit/5 to edit the contact with ID 5*@
-            @*Worry about categories later*@
-        </li>
-    }
-</ul>
+<div class="row g-3">
+    <div class="col-12 col-lg-4">
+        <div class="sideNav mb-3">
+            <form>
+                @*Fix button styling in the next 3 lines*@
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" />
+                    <button class="btn btn-primary">Search</button>
+                </div>
+            </form>
+            <div class="mt-5">
+                <label class="form-label">Category Filter</label>
+                <select class="form-select">
+                    <option value="">All Contacts</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-3">
+            @if (contacts.Any())
+            {
+                @foreach (ContactDTO contact in contacts)
+                {
+                    <div class="col" @key="contact.Id">
+                        <ContactCard OnDelete="DeleteContact"
+                            Contact="contact" 
+                        />
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div>
+                    <h4>No Contacts found!</h4>
+                    <p>
+                        Add some contacts <a href="contacts/create">here</a>?
+                    </p>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
 
 
 
@@ -47,8 +80,6 @@
     #region methods
     protected override async Task OnInitializedAsync()
     {
-
-
         try
         {
             UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
@@ -59,7 +90,26 @@
         {
             Console.WriteLine(ex);
         }
+    }
 
+
+    // run delete method await DeleteContactAsync(int contactId, string userId)
+
+    private async Task DeleteContact(int contactId)
+    {
+        try
+        {
+
+            UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
+            await ContactService.DeleteContactAsync(contactId, userInfo!.UserId);
+
+            contacts = await ContactService.GetContactsAsync(userInfo!.UserId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
     }
 
     #endregion

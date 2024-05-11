@@ -49,6 +49,7 @@ namespace CloudContacts.Services
 
         }
 
+
         public async Task<ContactDTO?> GetContactByIdAsync(int contactId, string userId)
         {
             Contact? contact = await repository.GetContactByIdAsync(contactId, userId);
@@ -81,7 +82,6 @@ namespace CloudContacts.Services
                 contact.Email = contactDTO.Email;
                 contact.PhoneNumber = contactDTO.PhoneNumber;
 
-                //TODO: Images
                 if (contactDTO.ImageUrl?.StartsWith("data:") == true)
                 {
                     contact.Image = UploadHelper.GetImageUpload(contactDTO.ImageUrl);
@@ -91,10 +91,24 @@ namespace CloudContacts.Services
                     contact.Image = null;
                 }
 
-                //ToDo: Categories????
-
+                // dont let db update cats yet
+                contact.Categories.Clear();
                 await repository.UpdateContactAsync(contact);
+
+                //remove all the old cats
+                await repository.RemoveCategoriesFromContactAsync(contact.Id, userId);
+
+                //add back the cats based on the users selected 
+                IEnumerable<int> selectedCategoryIds = contactDTO.Categories.Select(c => c.Id);
+                await repository.AddCategoriesToContactAsync(contact.Id, userId, selectedCategoryIds);
             }
         }
+        public async Task DeleteContactAsync(int contactId, string userId)
+        {
+            await repository.DeleteContactAsync(contactId, userId);
+        }
+
+
+
     }
 }

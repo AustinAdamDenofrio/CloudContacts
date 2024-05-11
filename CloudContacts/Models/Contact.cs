@@ -82,7 +82,6 @@ namespace CloudContacts.Models
     
     public static class ContactExtensions
     {
-        private static CategoryDTO categoryDTO;
 
         public static ContactDTO ToDTO(this Contact contact)
         {
@@ -108,7 +107,7 @@ namespace CloudContacts.Models
             foreach (Category category in contact.Categories)
             {
                 category.Contacts.Clear();
-                dto.Categories.Add(categoryDTO);
+                dto.Categories.Add(category.ToDTO());
             }
 
             return dto;

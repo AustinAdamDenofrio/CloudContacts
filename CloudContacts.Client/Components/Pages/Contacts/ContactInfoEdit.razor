@@ -10,7 +10,7 @@
 @if (contact is not null)
 {
 
-    <PageTitle>Cloud Contacts | @(string.IsNullOrEmpty(contact?.FullName) ? "Edit Contact" : contact.FullName )</PageTitle>
+    <PageTitle>Cloud Contacts | @(string.IsNullOrEmpty(contact?.FullName) ? "Edit Contact" : contact.FullName)</PageTitle>
 
     <div class="p-3 my-5 border-2 shadow-lg bg-light">
         <ContactForm Contact="contact"
