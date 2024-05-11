@@ -2,6 +2,15 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     height: 100%;
 }
+
+
+.bg-blue-gradient {
+    background: rgb(255,255,255);
+    background: linear-gradient(111deg, rgba(255,255,255,1) 10%, rgba(225,232,249,1) 79%, rgba(200,227,255,1) 100%);
+}
+
+
+
 .square-img-container {
     position: relative;
     background-color: #edf5fc;
