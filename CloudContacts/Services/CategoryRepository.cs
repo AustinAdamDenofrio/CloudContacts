@@ -22,7 +22,10 @@ namespace CloudContacts.Services
         {
             using ApplicationDbContext context = contextFactory.CreateDbContext();
 
-            IEnumerable<Category> categories = await context.Categories.Where(c => c.AppUserId == userId).ToListAsync();
+            IEnumerable<Category> categories = await context.Categories 
+                                                            .Where(c => c.AppUserId == userId)
+                                                            .Include(c => c.Contacts)
+                                                            .ToListAsync();
 
             return categories;
         }

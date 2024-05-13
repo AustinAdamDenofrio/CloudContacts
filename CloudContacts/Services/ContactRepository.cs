@@ -142,5 +142,23 @@ namespace CloudContacts.Services
 
             return contacts;
         }
+
+        public async Task<IEnumerable<Contact>> SearchContactsAsync(string searchTerm, string userId)
+        {
+            using ApplicationDbContext context = contextFactory.CreateDbContext();
+
+            string normalizedSearch = searchTerm.Trim().ToLower();
+
+            List<Contact> contacts = await context.Contacts
+                                                   .Where(c => c.AppUserId == userId) // only include YOUR contacts
+                                                   .Include(c => c.Categories)        // Make sure we brinf the categories with us
+                                                   .Where(c => string.IsNullOrEmpty(normalizedSearch)  // Get all contact if they send us a null or empty string
+                                                                || c.FirstName!.ToLower().Contains(normalizedSearch)
+                                                                || c.LastName!.ToLower().Contains(normalizedSearch)
+                                                                || c.Categories.Any(cat => cat.Name!.ToLower().Contains(normalizedSearch))
+                                                                )
+                                                   .ToListAsync();
+            return contacts;
+        }
     }
 }

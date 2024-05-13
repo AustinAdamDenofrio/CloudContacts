@@ -2,30 +2,50 @@
 @attribute [Authorize]
 
 @inject IContactDTOService ContactService
+@inject ICategoryDTOService CategoryService
+@inject NavigationManager Nav
 @rendermode InteractiveServer
 
 <PageTitle>Cloud Contacts | Contacts</PageTitle>
 
 <div class="d-flex align-items-center mt-3">
-    <h1 class="">All Contacts</h1>
-    <a href="contacts/create" class="ms-auto btn btn-primary rounded-pill">New Contact</a>
+    @if (!string.IsNullOrWhiteSpace(SearchTerm))
+    {
+        <h1>Search results for "@SearchTerm"</h1>
+    }
+    else if(CategoryId is not null or 0)
+    {
+        <h1>Category: @(categories.FirstOrDefault(c => c.Id == CategoryId)?.Name)</h1>
+    }
+    else
+    {
+        <h1>All Contacts</h1>
+    }
 
+</div>
+
+<div class="d-flex align-items-center mt-3">
+    <a href="contacts/create" class="ms-auto btn btn-primary rounded-pill">New Contact</a>
 </div>
 
 <div class="row g-3">
     <div class="col-12 col-lg-4">
         <div class="sideNav mb-3">
-            <form>
+            <form @onsubmit="HandleSearch">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search" />
+                    <InputText @bind-Value="searchInput" class="form-control" placeholder="Search" />
                     <button class="btn btn-primary">Search</button>
                 </div>
             </form>
             <div class="mt-5">
                 <label class="form-label">Category Filter</label>
-                <select class="form-select">
+                <InputSelect class="form-select" @bind-Value="CategoryId" @bind-Value:after="HandleCategoryChanged">
                     <option value="">All Contacts</option>
-                </select>
+                    @foreach (CategoryDTO category in categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </InputSelect>
             </div>
         </div>
     </div>
@@ -37,8 +57,8 @@
                 {
                     <div class="col" @key="contact.Id">
                         <ContactCard 
-                        OnDelete="DeleteContact"
-                        Contact="contact" 
+                            OnDelete="DeleteContact"
+                            Contact="contact" 
                         />
                     </div>
                 }
@@ -67,13 +87,17 @@
 
     [SupplyParameterFromQuery]
     public int? CategoryId { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? SearchTerm { get; set; }
     #endregion
 
 
     #region state
     private IEnumerable<ContactDTO> contacts = [];
+    private IEnumerable<CategoryDTO> categories = [];
 
-
+    private string? searchInput;
     #endregion
 
 
@@ -83,25 +107,42 @@
     {
         UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
 
-        if (CategoryId is not null or 0)
-        {
-            contacts = await ContactService.GetContactsByCategoryIdAsync(CategoryId.Value, userInfo!.UserId);
-        }
-        else
-        {
-            contacts = await ContactService.GetContactsAsync(userInfo!.UserId);
-        }
-
         try
         {
 
-            contacts = await ContactService.GetContactsAsync(userInfo!.UserId);
+            categories = await CategoryService.GetCategoryAsync(userInfo!.UserId);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
         }
 
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
+
+
+        if (!string.IsNullOrWhiteSpace(SearchTerm))
+        {
+            searchInput = SearchTerm;
+            CategoryId = null;
+            //ToDo: Search Contacts
+            contacts = await ContactService.SearchContactsAsync(SearchTerm, userInfo!.UserId);
+        }
+        else if (CategoryId is not null or 0)
+        {
+            searchInput = null;
+            contacts = await ContactService.GetContactsByCategoryIdAsync(CategoryId.Value, userInfo!.UserId);
+        }
+        else
+        {
+            CategoryId = null;
+            searchInput = null;
+
+            contacts = await ContactService.GetContactsAsync(userInfo!.UserId);
+        }        
     }
 
 
@@ -123,5 +164,31 @@
         }
     }
 
+
+    private void HandleCategoryChanged()
+    {
+        Dictionary<string, object?> queryParameters = new Dictionary<string, object?>()
+        {
+            { nameof(CategoryId), CategoryId},
+            { nameof(SearchTerm), null}
+        };
+
+        string url = Nav.GetUriWithQueryParameters(queryParameters);
+        Nav.NavigateTo(url);
+
+    }
+
+
+    private void HandleSearch()
+    {
+        Dictionary<string, object?> queryParameters = new Dictionary<string, object?>()
+        {
+            { nameof(CategoryId), null},
+            { nameof(SearchTerm), searchInput}
+        };
+
+        string url = Nav.GetUriWithQueryParameters(queryParameters);
+        Nav.NavigateTo(url);
+    }
     #endregion
 }

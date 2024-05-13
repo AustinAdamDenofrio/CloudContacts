@@ -8,6 +8,7 @@ namespace CloudContacts.Client.Services.Interfaces
         Task<IEnumerable<ContactDTO>> GetContactsAsync(string userId);
         Task<ContactDTO?> GetContactByIdAsync(int contactId, string userId);
         Task<IEnumerable<ContactDTO>> GetContactsByCategoryIdAsync(int categoryId, string userId);
+        Task<IEnumerable<ContactDTO>> SearchContactsAsync(string searchTerm, string userId);
         Task UpdateContactAsync(ContactDTO contactDTO, string userId);
 
         Task DeleteContactAsync(int contactId, string userId);

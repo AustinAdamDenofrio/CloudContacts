@@ -110,5 +110,11 @@ namespace CloudContacts.Services
 
             return contacts.Select(c => c.ToDTO());
         }
+
+        public async Task<IEnumerable<ContactDTO>> SearchContactsAsync(string searchTerm, string userId)
+        {
+            IEnumerable<Contact> contacts = await repository.SearchContactsAsync(searchTerm, userId);
+            return contacts.Select(c => c.ToDTO());
+        }
     }
 }
