@@ -74,6 +74,7 @@ namespace CloudContacts.Services
                                                          .Include(c => c.Categories)
                                                          .ToListAsync();
 
+
             return contacts;
         }
 
@@ -128,6 +129,18 @@ namespace CloudContacts.Services
                 context.Contacts.Remove(contact);
                 await context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<Contact>> GetContactsByCategoryIdAsync(int categoryId, string userId)
+        {
+            using ApplicationDbContext context = contextFactory.CreateDbContext();
+            List<Contact> contacts = await context.Contacts
+                                                    .Include(c => c.Categories)
+                                                    .Where(c => c.AppUserId == userId && c.Categories.Any(cat => cat.Id == categoryId))
+                                                    .ToListAsync(); 
+
+
+            return contacts;
         }
     }
 }

@@ -16,7 +16,6 @@
     <div class="col-12 col-lg-4">
         <div class="sideNav mb-3">
             <form>
-                @*Fix button styling in the next 3 lines*@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search" />
                     <button class="btn btn-primary">Search</button>
@@ -37,8 +36,9 @@
                 @foreach (ContactDTO contact in contacts)
                 {
                     <div class="col" @key="contact.Id">
-                        <ContactCard OnDelete="DeleteContact"
-                            Contact="contact" 
+                        <ContactCard 
+                        OnDelete="DeleteContact"
+                        Contact="contact" 
                         />
                     </div>
                 }
@@ -62,10 +62,11 @@
 
 @code {
     #region parameter
-
     [CascadingParameter]
     private Task<AuthenticationState>? AuthStateTask { get; set; }
 
+    [SupplyParameterFromQuery]
+    public int? CategoryId { get; set; }
     #endregion
 
 
@@ -80,9 +81,19 @@
     #region methods
     protected override async Task OnInitializedAsync()
     {
+        UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
+
+        if (CategoryId is not null or 0)
+        {
+            contacts = await ContactService.GetContactsByCategoryIdAsync(CategoryId.Value, userInfo!.UserId);
+        }
+        else
+        {
+            contacts = await ContactService.GetContactsAsync(userInfo!.UserId);
+        }
+
         try
         {
-            UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
 
             contacts = await ContactService.GetContactsAsync(userInfo!.UserId);
         }
@@ -90,6 +101,7 @@
         {
             Console.WriteLine(ex);
         }
+
     }
 
 
@@ -108,7 +120,6 @@
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            throw;
         }
     }
 

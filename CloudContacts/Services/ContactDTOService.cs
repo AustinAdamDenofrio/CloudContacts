@@ -48,15 +48,12 @@ namespace CloudContacts.Services
             return createContact.ToDTO();
 
         }
-
-
         public async Task<ContactDTO?> GetContactByIdAsync(int contactId, string userId)
         {
             Contact? contact = await repository.GetContactByIdAsync(contactId, userId);
             // turnary in place of if statement
             return contact?.ToDTO(); 
         }
-
         public async Task<IEnumerable<ContactDTO>> GetContactsAsync(string userId)
         {
             IEnumerable<Contact> contacts = await repository.GetContactsAsync(userId);
@@ -64,7 +61,6 @@ namespace CloudContacts.Services
 
             return contactsDTO;
         }
-
         public async Task UpdateContactAsync(ContactDTO contactDTO, string userId)
         {
             Contact? contact = await repository.GetContactByIdAsync(contactDTO.Id, userId);
@@ -108,7 +104,11 @@ namespace CloudContacts.Services
             await repository.DeleteContactAsync(contactId, userId);
         }
 
+        public async Task<IEnumerable<ContactDTO>> GetContactsByCategoryIdAsync(int categoryId, string userId)
+        {
+            IEnumerable<Contact> contacts = await repository.GetContactsByCategoryIdAsync(categoryId, userId);
 
-
+            return contacts.Select(c => c.ToDTO());
+        }
     }
 }
