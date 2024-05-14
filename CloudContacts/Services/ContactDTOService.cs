@@ -4,11 +4,13 @@ using CloudContacts.Helper;
 using CloudContacts.Models;
 using CloudContacts.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 
 namespace CloudContacts.Services
 {
-    public class ContactDTOService(IContactRepository repository) : IContactDTOService
+    public class ContactDTOService(IContactRepository repository, IEmailSender emailSender) : IContactDTOService
     {
         public async Task<ContactDTO> CreateContactAsync(ContactDTO contactDTO, string userId)
         {
@@ -115,6 +117,16 @@ namespace CloudContacts.Services
         {
             IEnumerable<Contact> contacts = await repository.SearchContactsAsync(searchTerm, userId);
             return contacts.Select(c => c.ToDTO());
+        }
+
+        public async Task<bool> EmailContactAsync(int contactId, EmailData emailData, string userId)
+        {
+            Contact? contact = await repository.GetContactByIdAsync(contactId, userId);
+            //if there was no email, or cannot find a contact with that id in DB for the logged in user.
+            if (contact is null || contact.Email.IsNullOrEmpty()) return false;
+            //If contact has email
+            await emailSender.SendEmailAsync(contact.Email!, emailData.Subject!, emailData.Message!);
+            return true;
         }
     }
 }

@@ -12,5 +12,6 @@ namespace CloudContacts.Client.Services.Interfaces
         Task UpdateContactAsync(ContactDTO contactDTO, string userId);
 
         Task DeleteContactAsync(int contactId, string userId);
+        Task<bool> EmailContactAsync(int contactId, EmailData emailData, string userId);
     }
 }

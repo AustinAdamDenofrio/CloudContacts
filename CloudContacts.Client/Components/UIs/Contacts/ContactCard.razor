@@ -2,7 +2,7 @@
 
 @if (Contact is not null)
 {
-    <div class="card h-100 bg-blue-gradient">
+    <div class="card h-100 ">
         <div class="row g-0">
             <div class="col-md-4 square-img-container rounded-start overflow-hidden">
                 <img src="@Contact.ImageUrl" class="square-img" />
@@ -32,8 +32,8 @@
                     @if (isDeleting == false)
                     {
                         <div class="fs-4">
-                            <a class="me-3 editIcons" href="contacts/edit/@Contact.Id"><i class="bi bi-pencil-fill "></i></a>
-                            <a class="me-3 editIcons" href="#"><i class="bi bi-envelope-fill "></i></a>
+                            <a class="me-3 editIcons" href="/contacts/edit/@Contact.Id"><i class="bi bi-pencil-fill "></i></a>
+                            <a class="me-3 editIcons" href="/contacts/email/@Contact.Id"><i class="bi bi-envelope-fill "></i></a>
 
                             <a class="me-3 editIcons" role="button" @onclick="() => isDeleting = true">
                                 <i class="bi bi-trash-fill text-danger "></i>

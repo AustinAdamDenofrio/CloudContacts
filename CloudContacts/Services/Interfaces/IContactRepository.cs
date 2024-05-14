@@ -1,5 +1,6 @@
 ﻿using CloudContacts.Client.Models;
 using CloudContacts.Models;
+using NuGet.Protocol.Core.Types;
 
 namespace CloudContacts.Services.Interfaces
 {

@@ -48,6 +48,7 @@ namespace CloudContacts.Services
             using ApplicationDbContext context = contextFactory.CreateDbContext();
 
             Category? category = await context.Categories
+                                    .Include(c => c.Contacts)
                                     .FirstOrDefaultAsync(c => c.AppUserId == userId && c.Id == categoryId);
 
             return category;

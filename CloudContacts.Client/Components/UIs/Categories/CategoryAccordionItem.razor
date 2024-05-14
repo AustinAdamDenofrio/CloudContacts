@@ -29,7 +29,7 @@
                             </a>
 
                             @*Take me to the contacts index page filtered by category*@
-                            <a class="me-1" href="#">
+                            <a class="me-1" href="/categories/email/@Category.Id">
                                 <i class="bi bi-envelope-fill" aria-label="Email Category"></i>
                             </a>
                         </span>
@@ -111,12 +111,9 @@
                     {
                         @foreach (ContactDTO contact in Category.Contacts)
                         {
-                            <li class="list-group-item text-center lead text-secondary">
-                                <a href="contacts?categoryId=@Category.Id" class="d-flex link-opacity-50-hover text-decoration-none">
-                                    <img src="@contact.ImageUrl" class="accordion-contact-image me-3 icon" /> 
-                                    <span class="link-secondary">
-                                        @contact.FullName
-                                    </span>
+                            <li class="list-group-item text-center text-primary">
+                                <a href="contacts/edit/@contact.Id" class="hstack text-decoration-none text-dark">
+                                    <img src="@contact.ImageUrl" class="accordion-contact-image me-3 icon" /> @contact.FullName
                                 </a>
                             </li>
                         }
