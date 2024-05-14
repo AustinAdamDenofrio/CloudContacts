@@ -24,7 +24,6 @@
                             <a role="button" class="me-1" @onclick="() => status = Status.Deleting">
                                 <i class="bi bi-trash-fill text-danger" aria-label="Delete Category"></i>
                             </a>
-                            @*Take me to the contacts index page filtered by category*@
                             <a class="me-1" href="contacts?categoryId=@Category.Id">
                                 <i class="bi bi-eye-fill" aria-label="View Category"></i>
                             </a>
@@ -102,9 +101,26 @@
             <div class="accordion-body">
                 <ul class="list-group">
                     @*TODO: display the contacts here*@
-                    <li class="list-group-item text-center lead text-secondary">
-                        No contacts in this category
-                    </li>
+                    @if(Category.Contacts.Count <= 0)
+                    {
+                        <li class="list-group-item text-center lead text-secondary">
+                            No contacts in this category
+                        </li>                        
+                    }
+                    else
+                    {
+                        @foreach (ContactDTO contact in Category.Contacts)
+                        {
+                            <li class="list-group-item text-center lead text-secondary">
+                                <a href="contacts?categoryId=@Category.Id" class="d-flex link-opacity-50-hover text-decoration-none">
+                                    <img src="@contact.ImageUrl" class="accordion-contact-image me-3 icon" /> 
+                                    <span class="link-secondary">
+                                        @contact.FullName
+                                    </span>
+                                </a>
+                            </li>
+                        }
+                    }
                 </ul>
             </div>
         </div>

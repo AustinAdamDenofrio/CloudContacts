@@ -48,11 +48,12 @@
                         <button class="btn btn-sm btn-secondary" @onclick="() => isDeleting = false">Cancel</button>
                     }
 
-                    <div class="hstack gap-2 flex-wrap       mt-3    ">
+                    <div class="hstack gap-2 flex-wrap mt-3">
 
                         @foreach (CategoryDTO category in Contact.Categories)
                         {
-                            <a href="contacts?categoryId=@category.Id" class="text-decoration-none badge rounded-pill border border-1 text-dark fw-normal       bg-light    ">
+
+                            <a href="contacts?categoryId=@category.Id" class="text-decoration-none badge rounded-pill border border-1 text-dark fw-normal bg-light">
                                 @category.Name
                             </a>
 

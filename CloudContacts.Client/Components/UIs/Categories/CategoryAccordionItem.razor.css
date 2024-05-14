@@ -1,0 +1,7 @@
+﻿.accordion-contact-image {
+    object-position: center;
+    object-fit: cover;
+    height: 2rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
