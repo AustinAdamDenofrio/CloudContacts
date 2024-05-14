@@ -64,16 +64,18 @@
     }
     private async Task HandleSubmit()
     {
+        
         try
         {
             await CategoryService.CreateCategoryAsync(formCategory, userInfo!.UserId);
             formCategory = new CategoryDTO();
             categories = await CategoryService.GetCategoryAsync(userInfo!.UserId);
+
+
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            throw;
         }
     }
 

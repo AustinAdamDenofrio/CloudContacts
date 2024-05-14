@@ -78,18 +78,23 @@
 
     private async Task HandleSubmit(EmailData formEmailData)
     {
+        string message = $"Something went wrong emailing the {category?.Name} category. Please try again later.";
         try
         {
-            await CategoryService.EmailCategoryAsync(CategoryId, formEmailData, userInfo!.UserId);
+            
+            bool success = await CategoryService.EmailCategoryAsync(CategoryId, formEmailData, userInfo!.UserId);
+
+            if (success)
+            {
+                message = $"Email successfully sent to your {category?.Name} category!";
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
         }
 
-        Nav.NavigateTo("categories");
-
-        //TODO: show the user a success or failure message
+        Nav.NavigateTo($"contacts?message={message}");
 
     }
 

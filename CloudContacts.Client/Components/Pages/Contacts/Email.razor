@@ -56,7 +56,7 @@
 
 
 
-            if (contact is null)
+        if (contact is null)
         {
             Nav.NavigateTo("contacts");
         }
@@ -76,16 +76,21 @@
 
     private async Task HandleSubmit(EmailData formEmailData)
     {
+        string message = $"Something went wrong emailing {contact?.FullName}. Please try again later.";
         try
         {
-            await ContactService.EmailContactAsync(ContactId, formEmailData, userInfo!.UserId);
+            bool success = await ContactService.EmailContactAsync(ContactId, formEmailData, userInfo!.UserId);
+            if (success)
+            {
+                message = $"Email successfully sent to your {contact?.FullName}!";
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
         }
 
-        Nav.NavigateTo("contacts");
+        Nav.NavigateTo($"contacts?message={message}");
 
         //TODO: show the user a success or failure message
 

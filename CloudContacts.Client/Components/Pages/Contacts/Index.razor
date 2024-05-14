@@ -48,6 +48,13 @@
                 </InputSelect>
             </div>
         </div>
+
+        @if (!string.IsNullOrEmpty(toastMessage))
+        {
+            <ToastMessage @key="messageId"
+                          Message="@toastMessage"
+                          Color="@messageColor" />
+        }
     </div>
     <div class="col-12 col-lg-8">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-3">
@@ -90,6 +97,9 @@
 
     [SupplyParameterFromQuery]
     public string? SearchTerm { get; set; }
+
+    [SupplyParameterFromQuery] // ?message=hello
+    public string? Message { get; set; }
     #endregion
 
 
@@ -98,6 +108,10 @@
     private IEnumerable<CategoryDTO> categories = [];
 
     private string? searchInput;
+
+    private string? toastMessage;
+    private string? messageColor;
+    private Guid messageId = Guid.NewGuid();
     #endregion
 
 
@@ -123,6 +137,10 @@
     {
         UserInfo? userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
 
+        if (!string.IsNullOrEmpty(Message))
+        {
+            ShowToastMessage(Message);
+        }
 
         if (!string.IsNullOrWhiteSpace(SearchTerm))
         {
@@ -189,6 +207,25 @@
 
         string url = Nav.GetUriWithQueryParameters(queryParameters);
         Nav.NavigateTo(url);
+    }
+
+
+    private void ShowToastMessage(string message)
+    {
+        toastMessage = message;
+
+        if(message.ToLower().Contains("wrong") || message.ToLower().Contains("error"))
+        {
+            messageColor = "danger";
+        }
+        else
+        {
+
+            messageColor = "success";
+        }
+
+        //this will reset the toast componant
+        messageId = Guid.NewGuid();
     }
     #endregion
 }
