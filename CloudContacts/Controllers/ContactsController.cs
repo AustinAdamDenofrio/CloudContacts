@@ -100,7 +100,7 @@ namespace CloudContacts.Controllers
         }
 
         //    // PUT: "api/contacts/5" -> updates the selected contact and returns Ok
-        [HttpPost("{contactDTO.Id:int}")]
+        [HttpPut("{contactDTO.Id:int}")]
         public async Task<ActionResult> UpdateContact(ContactDTO contactDTO)
         {
             try
