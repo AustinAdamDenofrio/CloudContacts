@@ -4,7 +4,7 @@
 @inject IContactDTOService ContactService
 @inject ICategoryDTOService CategoryService
 @inject NavigationManager Nav
-@rendermode InteractiveServer
+@rendermode InteractiveWebAssembly
 
 <PageTitle>Cloud Contacts | Contacts</PageTitle>
 
@@ -188,7 +188,8 @@
         Dictionary<string, object?> queryParameters = new Dictionary<string, object?>()
         {
             { nameof(CategoryId), CategoryId},
-            { nameof(SearchTerm), null}
+            { nameof(SearchTerm), null},
+            { nameof(Message), null},
         };
 
         string url = Nav.GetUriWithQueryParameters(queryParameters);
@@ -202,7 +203,8 @@
         Dictionary<string, object?> queryParameters = new Dictionary<string, object?>()
         {
             { nameof(CategoryId), null},
-            { nameof(SearchTerm), searchInput}
+            { nameof(SearchTerm), searchInput},
+            { nameof(Message), null},
         };
 
         string url = Nav.GetUriWithQueryParameters(queryParameters);
