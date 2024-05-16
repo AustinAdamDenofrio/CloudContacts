@@ -1,0 +1,7 @@
+﻿.checklist {
+    list-style-type: none;
+}
+
+    .checklist .bi {
+        color: var(--ad-theme-core);
+    }

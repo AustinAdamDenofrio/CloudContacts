@@ -54,10 +54,10 @@ namespace CloudContacts.Services
             {
                 categoryToUpdate.Name = category.Name;
 
+                categoryToUpdate.Contacts.Clear();
+
                 await repository.UpdateCategoryAsync(categoryToUpdate, userId);
             }
-
-
         }
 
         public async Task<bool> EmailCategoryAsync(int categoryId, EmailData emailData, string userId)
