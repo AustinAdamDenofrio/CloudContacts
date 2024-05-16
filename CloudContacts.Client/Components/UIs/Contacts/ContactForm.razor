@@ -210,7 +210,7 @@
         {
             userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
             // get the categories from the service
-            categories = await CategoryService.GetCategoryAsync(userInfo!.UserId);
+            categories = await CategoryService.GetCategoriesAsync(userInfo!.UserId);
 
             selectedCategoryIds = [.. Contact!.Categories.Select(c => c.Id)];
 

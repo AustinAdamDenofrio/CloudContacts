@@ -1,10 +1,11 @@
 ﻿@page "/contacts/email/{contactId:int}"
-@rendermode InteractiveServer
 
 @attribute [Authorize]
 
 @inject IContactDTOService ContactService
 @inject NavigationManager Nav
+
+@rendermode InteractiveAuto
 
 <PageTitle>Contacts || Email Contact</PageTitle>
 

@@ -6,12 +6,12 @@ namespace CloudContacts.Services.Interfaces
     {
         Task<Category> CreateCategoryAsync(Category category);
 
-        Task<IEnumerable<Category>> GetCategoryAsync(string userId);
+        Task<IEnumerable<Category>> GetCategoriesAsync(string userId);
 
         Task<Category?> GetCategoryByIdAsync(int categoryId, string userId);
 
         Task UpdateCategoryAsync(Category category, string userId);
 
-        Task DeleteCategoriesAsync(int categoryId, string userId);
+        Task DeleteCategoryAsync(int categoryId, string userId);
     }
 }

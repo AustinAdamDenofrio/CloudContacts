@@ -31,7 +31,7 @@ namespace CloudContacts.Client.Services
         public async Task<bool> EmailContactAsync(int contactId, EmailData emailData, string userId)
         {
 
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/contacts/{contactId}/email", emailData);
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/contacts/email/{contactId}", emailData);
             if (response.IsSuccessStatusCode == true)
             {
                 return true;

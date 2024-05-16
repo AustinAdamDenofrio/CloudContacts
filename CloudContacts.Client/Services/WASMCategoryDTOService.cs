@@ -1,38 +1,53 @@
 ﻿using CloudContacts.Client.Models;
 using CloudContacts.Client.Services.Interfaces;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace CloudContacts.Client.Services
 {
-    public class WASMCategoryDTOService : ICategoryDTOService
+    public class WASMCategoryDTOService(HttpClient _httpClient) : ICategoryDTOService
     {
-        public Task<CategoryDTO> CreateCategoryAsync(CategoryDTO category, string userId)
+        public async Task<CategoryDTO> CreateCategoryAsync(CategoryDTO formCategory, string userId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/categories", formCategory);
+            response.EnsureSuccessStatusCode();
+
+            CategoryDTO? categoryDTO = await response.Content.ReadFromJsonAsync<CategoryDTO>();
+            return categoryDTO!;
         }
 
-        public Task DeleteCategoriesAsync(int categoryId, string userId)
+        public async Task DeleteCategoryAsync(int categoryId, string userId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage? response = await _httpClient.DeleteAsync($"api/categories/{categoryId}");
         }
 
-        public Task<bool> EmailCategoryAsync(int categoryId, EmailData emailData, string userId)
+        public async Task<bool> EmailCategoryAsync(int categoryId, EmailData emailData, string userId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"api/categories/email/{categoryId}", emailData);
+            if (response.IsSuccessStatusCode == true)
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public Task<IEnumerable<CategoryDTO>> GetCategoryAsync(string userId)
+        public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync(string userId)
         {
-            throw new NotImplementedException();
+            IEnumerable<CategoryDTO> categoriesDTO = await _httpClient.GetFromJsonAsync<IEnumerable<CategoryDTO>>("api/categories") ?? [];
+            return categoriesDTO;
         }
 
-        public Task<CategoryDTO?> GetCategoryByIdAsyc(int categoryId, string userId)
+        public async Task<CategoryDTO?> GetCategoryByIdAsyc(int categoryId, string userId)
         {
-            throw new NotImplementedException();
+            CategoryDTO? category = await _httpClient.GetFromJsonAsync<CategoryDTO>($"api/categories/{categoryId}");
+            return category;
         }
 
-        public Task UpdateCategoryAsync(CategoryDTO category, string userId)
+        public async Task UpdateCategoryAsync(CategoryDTO categoryDTO, string userId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"api/categories/{categoryDTO.Id}", categoryDTO);
+            response.EnsureSuccessStatusCode();
         }
     }
 }

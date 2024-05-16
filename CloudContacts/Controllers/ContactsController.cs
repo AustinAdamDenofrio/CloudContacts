@@ -132,14 +132,13 @@ namespace CloudContacts.Controllers
         }
 
         //    // POST: "api/contacts/5/email" -> sends an email to contact and returns Ok or BadRequest to indicate success or failure
-        [HttpPost("{Id:int}")]
-        public async Task<ActionResult> EmailContact([FromRoute] int Id, EmailData emailData)
+        [HttpPost("email/{Id:int}")]
+        public async Task<ActionResult> EmailContact([FromRoute] int Id, [FromBody] EmailData emailData)
         {
             try
             {
                 await _contactService.EmailContactAsync(Id, emailData, _userId);
                 return Ok();
-
             }
             catch (Exception ex)
             {

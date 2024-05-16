@@ -18,7 +18,7 @@ namespace CloudContacts.Services
         }
 
 
-        public async Task<IEnumerable<Category>> GetCategoryAsync(string userId)
+        public async Task<IEnumerable<Category>> GetCategoriesAsync(string userId)
         {
             using ApplicationDbContext context = contextFactory.CreateDbContext();
 
@@ -31,7 +31,7 @@ namespace CloudContacts.Services
         }
 
 
-        public async Task DeleteCategoriesAsync(int categoryId, string userId)
+        public async Task DeleteCategoryAsync(int categoryId, string userId)
         {
             using ApplicationDbContext context = contextFactory.CreateDbContext();
 

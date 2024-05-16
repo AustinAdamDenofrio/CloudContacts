@@ -4,7 +4,7 @@
 @inject IContactDTOService ContactService
 @inject ICategoryDTOService CategoryService
 @inject NavigationManager Nav
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveAuto
 
 <PageTitle>Cloud Contacts | Contacts</PageTitle>
 
@@ -123,7 +123,7 @@
 
         try
         {
-            categories = await CategoryService.GetCategoryAsync(userInfo!.UserId);
+            categories = await CategoryService.GetCategoriesAsync(userInfo!.UserId);
         }
         catch (Exception ex)
         {

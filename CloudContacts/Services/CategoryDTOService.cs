@@ -23,32 +23,21 @@ namespace CloudContacts.Services
         }
 
 
-        public async Task<IEnumerable<CategoryDTO>> GetCategoryAsync(string userId)
+        public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync(string userId)
         {
             // get from the database
-            IEnumerable<Category> createCategories = await repository.GetCategoryAsync(userId);
-
-
+            IEnumerable<Category> createCategories = await repository.GetCategoriesAsync(userId);
 
            IEnumerable<CategoryDTO> categoryDTO = createCategories.Select(c=>c.ToDTO());
 
-
-            ////create a list to hold DTOS
-            //List<CategoryDTO> results = new List<CategoryDTO>();
-
-            ////convert to DTO
-            //foreach (Category category in createCategories)
-            //{
-            //    results.Add(category.ToDTO());
-            //}
 
             return categoryDTO;
         }
 
 
-        public async Task DeleteCategoriesAsync(int categoryId, string userId)
+        public async Task DeleteCategoryAsync(int categoryId, string userId)
         {
-            await repository.DeleteCategoriesAsync(categoryId, userId);
+            await repository.DeleteCategoryAsync(categoryId, userId);
         }
 
         public async Task<CategoryDTO?> GetCategoryByIdAsyc(int categoryId, string userId)
