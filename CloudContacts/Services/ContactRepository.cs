@@ -18,7 +18,8 @@ namespace CloudContacts.Services
             {
                 foreach (int categoryId in categoryIds)
                 {
-                    Category? category = await context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId && c.AppUserId == userId);
+                    Category? category = await context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId 
+                                                                                        && c.AppUserId == userId);
 
                     if (category is not null)
                     {

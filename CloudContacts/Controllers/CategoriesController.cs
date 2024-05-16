@@ -77,8 +77,15 @@ namespace CloudContacts.Controllers
         {
             try
             {
-                await _categoryService.UpdateCategoryAsync(category, _userId);
-                return Ok();
+                if (id != category.Id)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    await _categoryService.UpdateCategoryAsync(category, _userId);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {

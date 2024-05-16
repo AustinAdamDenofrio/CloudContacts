@@ -3,7 +3,7 @@
 @attribute [Authorize]
 
 @inject ICategoryDTOService CategoryService
-@rendermode InteractiveAuto
+@rendermode InteractiveWebAssembly
 
 <PageTitle>Categories</PageTitle>
 
@@ -58,7 +58,7 @@
     protected override async Task OnInitializedAsync()
     {
         userInfo = await UserInfoHelper.GetUserInfoAsync(AuthStateTask);
-        categories = (await CategoryService.GetCategoriesAsync(userInfo!.UserId)).ToList();
+        categories = await CategoryService.GetCategoriesAsync(userInfo!.UserId);
     }
     private async Task HandleSubmit()
     {
@@ -88,7 +88,6 @@
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            throw;
         }
     }
 
@@ -103,7 +102,6 @@
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            throw;
         }
     }
 

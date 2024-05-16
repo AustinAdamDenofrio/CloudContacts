@@ -60,7 +60,8 @@ namespace CloudContacts.Services
             using ApplicationDbContext context = contextFactory.CreateDbContext();
 
             bool shouldUpdate = category.AppUserId == userId && 
-                                await context.Categories.AnyAsync(c => c.AppUserId == userId && c.Id == category.Id);
+                                await context.Categories.AnyAsync(c => c.AppUserId == userId 
+                                                                    && c.Id == category.Id);
 
             if (shouldUpdate)
             {

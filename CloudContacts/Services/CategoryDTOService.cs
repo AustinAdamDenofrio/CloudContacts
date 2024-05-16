@@ -56,6 +56,8 @@ namespace CloudContacts.Services
 
                 await repository.UpdateCategoryAsync(categoryToUpdate, userId);
             }
+
+
         }
 
         public async Task<bool> EmailCategoryAsync(int categoryId, EmailData emailData, string userId)
