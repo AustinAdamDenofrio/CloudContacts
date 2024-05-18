@@ -12,6 +12,8 @@ namespace CloudContacts.Client
     // This only provides a user name and email for display purposes. It does not actually include any tokens
     // that authenticate to the server when making subsequent requests. That works separately using a
     // cookie that will be included on HttpClient requests to the server.
+
+    //webassembly knows about claims principal because of persistant....
     internal class PersistentAuthenticationStateProvider : AuthenticationStateProvider
     {
         private static readonly Task<AuthenticationState> defaultUnauthenticatedTask =

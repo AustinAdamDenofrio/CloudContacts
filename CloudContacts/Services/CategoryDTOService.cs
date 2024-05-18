@@ -28,8 +28,7 @@ namespace CloudContacts.Services
             // get from the database
             IEnumerable<Category> createCategories = await repository.GetCategoriesAsync(userId);
 
-           IEnumerable<CategoryDTO> categoryDTO = createCategories.Select(c=>c.ToDTO());
-
+            IEnumerable<CategoryDTO> categoryDTO = createCategories.Select(c => c.ToDTO());
 
             return categoryDTO;
         }
