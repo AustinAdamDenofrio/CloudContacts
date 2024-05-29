@@ -19,7 +19,7 @@ namespace CloudContacts.Controllers
 
         // GET: "api/contacts" OR "api/contacts?categoryId=4" -> list of user contacts, optionally filtered by category
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContactDTO>>> GetContacts([FromQuery] int? categoryId)
+        public async Task<ActionResult<IEnumerable<ContactDTO>>> GetContacts([FromQuery] int categoryId)
         {
             try
             {
@@ -100,8 +100,8 @@ namespace CloudContacts.Controllers
         }
 
         //    // PUT: "api/contacts/5" -> updates the selected contact and returns Ok
-        [HttpPut("{contactDTO.Id:int}")]
-        public async Task<ActionResult> UpdateContact(ContactDTO contactDTO)
+        [HttpPut("{contactId:int}")]
+        public async Task<ActionResult> UpdateContact([FromBody] ContactDTO contactDTO, [FromRoute] int contactId)
         {
             try
             {
