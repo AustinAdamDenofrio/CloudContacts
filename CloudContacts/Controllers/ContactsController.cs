@@ -23,14 +23,14 @@ namespace CloudContacts.Controllers
         {
             try
             {
-                if (categoryId == null)
+                if (categoryId == 0)
                 {
                     IEnumerable<ContactDTO> contactsDTO = await _contactService.GetContactsAsync(_userId);
                     return Ok(contactsDTO);
                 }
                 else
                 {
-                    IEnumerable<ContactDTO> contactsDTO = await _contactService.GetContactsByCategoryIdAsync(categoryId.Value, _userId);
+                    IEnumerable<ContactDTO> contactsDTO = await _contactService.GetContactsByCategoryIdAsync(categoryId, _userId);
                     return Ok(contactsDTO);
                 }
             }
