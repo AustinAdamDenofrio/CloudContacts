@@ -25,6 +25,10 @@
 <ItemGroup>
 	<None Include="Data\DemoImages\**\*.*" CopyToOutputDirectory="PreserveNewest" />
 </ItemGroup>
+	
+<ItemGroup>
+  <Folder Include="wwwroot\img\favicons\" />
+</ItemGroup>
 
 	
 </Project>
