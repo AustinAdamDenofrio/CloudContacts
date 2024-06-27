@@ -22,13 +22,16 @@ namespace CloudContacts.Data
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');
 
+            var database = Environment.GetEnvironmentVariable("RAILWAY_SERVICE_NAME")
+                ?? typeof(DataUtility).Assembly.GetName().Name;
+
             var builder = new NpgsqlConnectionStringBuilder
             {
                 Host = databaseUri.Host,
                 Port = databaseUri.Port,
                 Username = userInfo[0],
                 Password = userInfo[1],
-                Database = databaseUri.LocalPath.TrimStart('/'),
+                Database = database,
                 SslMode = SslMode.Prefer
             };
 
